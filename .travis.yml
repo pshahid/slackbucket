@@ -1,0 +1,19 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+before_install:
+  - docker build --build-arg commit=${TRAVIS_COMMIT::7} -t pshahid/slackbucket:${TRAVIS_COMMIT::7} .
+
+script:
+  - pytest pshahid/slackbucket/tests
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag pshahid/slackbucket:${TRAVIS_COMMIT::7} pshahid/slackbucket:${TRAVIS_COMMIT::7}
+    docker push pshahid/slackbucket:${TRAVIS_COMMIT::7}
+    fi

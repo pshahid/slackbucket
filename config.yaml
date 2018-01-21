@@ -1,0 +1,7 @@
+cs-cofc:
+    channels:
+      - cscofc
+    plugins:
+      - quotes
+      - topic
+    token: /Users/paul/repos/slackbucket/token
