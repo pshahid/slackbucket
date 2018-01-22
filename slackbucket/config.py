@@ -41,8 +41,7 @@ class Configurator(object):
                 with open(self.tokenfile, 'r') as f:
                     self._token = f.read().strip()
             except FileNotFoundError:
-                # HACK: workaround for k8s auto-base64-encoding secrets. Determine how we can not make this assumption
-                self._token = base64.b64decode(os.getenv('SLACK_TOKEN')).strip()
+                self._token = os.getenv('SLACK_TOKEN').strip()
                 if not self._token:
                     raise RuntimeWarning("Unable to load slack token from either a file or an environment variable.")
 
