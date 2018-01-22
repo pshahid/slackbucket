@@ -11,7 +11,7 @@ before_install:
   - docker build --build-arg commit=${TRAVIS_COMMIT::7} -t pshahid/slackbucket:${TRAVIS_COMMIT::7} .
 
 script:
-  - docker run --rm
+  - docker run --rm -it pshahid/slackbucket:${TRAVIS_COMMIT::7} /usr/src/app/entrypoint.sh test
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
