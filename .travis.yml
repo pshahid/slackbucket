@@ -16,6 +16,6 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker tag pshahid/slackbucket:${TRAVIS_COMMIT::7} pshahid/slackbucket:${TRAVIS_COMMIT::7}
-    docker push pshahid/slackbucket:${TRAVIS_COMMIT::7}
+    docker tag pshahid/slackbucket:${TRAVIS_COMMIT::7} pshahid/slackbucket:${TRAVIS_COMMIT::7};
+    docker push pshahid/slackbucket:${TRAVIS_COMMIT::7};
     fi
