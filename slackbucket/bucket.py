@@ -1,5 +1,7 @@
 import time
 
+from slackclient.server import SlackLoginError
+
 
 class Bucket(object):
     """ Single-threaded blocking version of Bucket which listens with the real-time api. """
