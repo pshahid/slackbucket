@@ -3,8 +3,8 @@ FROM python:3.6
 ARG commit
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY . /usr/src/app
+ADD requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
+ADD . /usr/src/app
 
-ENTRYPOINT ['docker-entrypoint.sh']
-
+CMD ["/usr/src/app/entrypoint.sh", "run"]

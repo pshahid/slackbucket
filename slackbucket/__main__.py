@@ -1,10 +1,13 @@
 import argparse
 
-from core import MetaConfig, Bucket
+from config import MetaConfig
+from bucket import Bucket
+
 
 def main(args):
     cfgs = MetaConfig()
-    b = Bucket(cfgs.cfgs['cs-cofc'])
+    slack = cfgs.cfgs['cs-cofc'].slack
+    b = Bucket(slack, cfgs.cfgs['cs-cofc'])
     try:
         b.start()
     except KeyboardInterrupt:

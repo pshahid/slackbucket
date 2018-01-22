@@ -1,4 +1,4 @@
-import time
+import os
 import yaml
 
 from slackclient import SlackClient
@@ -9,7 +9,7 @@ class PluginLoader(object):
 
 
 class MetaConfig:
-    def __init__(self, path='/Users/paul/repos/slackbucket/config.yaml'):
+    def __init__(self, path='/usr/src/app/config.yaml'):
         self.path = path
         self.cfgs = {}
         for team, cfg in self._new_config_from_file().items():
@@ -36,8 +36,13 @@ class Configurator(object):
     def token(self):
         """ Lazily read the token file and cache the value for the session """
         if not self._token:
-            with open(self.tokenfile, 'r') as f:
-                self._token = f.read().strip()
+            try:
+                with open(self.tokenfile, 'r') as f:
+                    self._token = f.read().strip()
+            except FileNotFoundError:
+                self._token = os.getenv('SLACK_TOKEN')
+                if not self._token:
+                    raise RuntimeWarning("Unable to load slack token from either a file or an environment variable.")
 
         return self._token
 
