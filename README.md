@@ -6,4 +6,4 @@ Slackbucket is a bot that is the spiritual successor of bukket, our beloved chat
 
 The idea behind this version of bucket is to make it ultra extensible. In fact, given the primary goal, every single thing that slackbucket can do should be done through a plugin-type architecture, including most core functionality.
 
-Slackbucket's core will handle a few basic situations: calling procedures pre-start, post-start, and reciprocal stop procedures; determining if slackbucket is being commanded or if something should be a trigger.
+Slackbucket's core will handle a few basic situations: calling procedures pre-start, post-start, and same for shutdown; determining if slackbucket is being commanded or if something should be a trigger.
