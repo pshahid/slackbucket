@@ -10,7 +10,7 @@ class PluginLoader(object):
 
 
 class MetaConfig:
-    def __init__(self, path='/usr/src/app/config.yaml'):
+    def __init__(self, path='config.yaml'):
         self.path = path
         self.cfgs = {}
         for team, cfg in self._new_config_from_file().items():
@@ -49,7 +49,7 @@ class Configurator(object):
 
     @property
     def slack(self):
-        """ Lazily start the slack slack and cache the object """
+        """ Lazily start the slack client and cache the object """
         if not self._slack:
             self._slack = SlackClient(self.token)
         return self._slack
