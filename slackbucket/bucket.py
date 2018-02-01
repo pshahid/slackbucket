@@ -32,6 +32,26 @@ class Bucket(object):
         for hook in self._post_start_hooks:
             hook(self)
 
+    def _cmd(self, event, msg):
+        """ Internal call to delegate command behavior to plugins, returns response from plugin in slack """
+        for plugin in self.plugin_manager.loaded:
+            response = plugin.recv_cmd(msg)
+            if response:
+                self.say(response, event['channel'])
+                break
+
+    def _match(self, event, msg):
+        """ Another very similar internal call to _cmd, delegates match behavior to plugins; basically first match wins
+        here"""
+        for plugin in self.plugin_manager.loaded:
+            response = plugin.match(msg)
+            if response:
+                self.say(response, event['channel'])
+                break
+
+    def say(self, something, channel):
+        self.slack.api_call('chat.postMessage', channel=channel, text=something)
+
     def listen(self):
         """ Handles the three most core pieces of functionality:
         1) Read from slack feeds
@@ -43,13 +63,12 @@ class Bucket(object):
             return
 
         for event in events:
-            print(f"[x] Event: {event}")
             if event['type'] == 'message':
                 msg = event['text']
                 if msg.startswith(f"<@{self.user_id}>,"):
-                    print("Command us to do something")
+                    self._cmd(event, msg)
                 else:
-                    print("Not a command, but may be a trigger...")
+                    self._match(event, msg)
 
     def start(self):
         # Need to figure out what our user-id is so we can know when we're being talked at
