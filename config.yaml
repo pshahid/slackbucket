@@ -2,6 +2,5 @@ cs-cofc:
     channels:
       - cscofc
     plugins:
-      - quotes
-      - topic
+      - factoids.plugin.Factoids
     token: /Users/paul/repos/slackbucket/token

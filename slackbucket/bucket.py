@@ -1,5 +1,6 @@
 import time
 
+from pluginregistry import PluginRegistry
 
 class Bucket(object):
     """ Single-threaded blocking version of Bucket which listens with the real-time api. """
@@ -14,7 +15,7 @@ class Bucket(object):
         self.username = ''
         self.team_id = ''
         self.team = ''
-        self.plugin_manager = None
+        self.plugin_manager = PluginRegistry(plugins=cfg.plugins)
 
     def _whoami(self):
         resp = self.slack.api_call('auth.test')
