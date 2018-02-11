@@ -3,6 +3,10 @@ import time
 from .pluginregistry import PluginRegistry
 
 
+class BucketEventError(Exception):
+    """ General error for when an exceptional circumstance occurs while processing events """
+
+
 class Bucket(object):
     """ Single-threaded blocking version of Bucket which listens with the real-time api. """
 
@@ -34,19 +38,15 @@ class Bucket(object):
         for hook in self._post_start_hooks:
             hook(self)
 
-    def _cmd(self, event, msg):
-        """ Internal call to delegate command behavior to plugins, returns response from plugin in slack """
+    def _recv(self, event, msg, type='match'):
         for plugin in self.plugin_manager.loaded:
-            response = plugin.recv_cmd(msg)
-            if response:
-                self.say(response, event['channel'])
-                break
+            if type == 'match':
+                response = plugin.match(msg)
+            elif type == 'cmd':
+                response = plugin.recv_cmd(msg)
+            else:
+                raise BucketEventError(f"Unknown event type {type}")
 
-    def _match(self, event, msg):
-        """ Another very similar internal call to _cmd, delegates match behavior to plugins; basically first match wins
-        here"""
-        for plugin in self.plugin_manager.loaded:
-            response = plugin.match(msg)
             if response:
                 self.say(response, event['channel'])
                 break
@@ -68,9 +68,9 @@ class Bucket(object):
             if event['type'] == 'message':
                 msg = event['text']
                 if msg.startswith(f"<@{self.user_id}>,"):
-                    self._cmd(event, msg)
+                    self._recv(event, msg, type='cmd')
                 else:
-                    self._match(event, msg)
+                    self._recv(event, msg)
 
     def start(self):
         # Need to figure out what our user-id is so we can know when we're being talked at
