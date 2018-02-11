@@ -1,4 +1,5 @@
 import time
+import traceback
 
 from .pluginregistry import PluginRegistry
 
@@ -39,19 +40,21 @@ class Bucket(object):
             hook(self)
 
     def _recv(self, event, msg, type='match'):
+        """ Receive an event, pass the event to each loaded plugin in succession"""
         for plugin in self.plugin_manager.loaded:
             if type == 'match':
-                response = plugin.match(msg)
+                success, response = plugin.match(msg)
             elif type == 'cmd':
-                response = plugin.recv_cmd(msg)
+                success, response = plugin.recv_cmd(msg)
             else:
                 raise BucketEventError(f"Unknown event type {type}")
 
-            if response:
+            if success:
                 self.say(response, event['channel'])
                 break
 
     def say(self, something, channel):
+        """ Say something on a channel, pretty self explanatory. """
         self.slack.api_call('chat.postMessage', channel=channel, text=something)
 
     def listen(self):
@@ -73,14 +76,17 @@ class Bucket(object):
                     self._recv(event, msg)
 
     def start(self):
-        # Need to figure out what our user-id is so we can know when we're being talked at
+        # Figures out what our user-id is so we can know when we're being talked at
         self._post_start_hooks.append(Bucket._whoami)
         self._pre_start()
         if self.slack.rtm_connect(with_team_state=False):
             self.listening = True
             self._post_start()
             while self.listening:
-                self.listen()
+                try:
+                    self.listen()
+                except Exception:
+                    print(traceback.format_exc())
                 time.sleep(1)
         else:
             self.listening = False
