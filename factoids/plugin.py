@@ -18,3 +18,4 @@ class Factoids(BasePlugin):
     def match(self, msg):
         print("Factoids receiving msg!")
         print(msg)
+        return True, "Shutup!"

@@ -18,6 +18,7 @@ class Bucket(object):
         self._pre_start_hooks = []
         self._post_start_hooks = []
         self.user_id = ''
+        self.bot_id = ''
         self.username = ''
         self.team_id = ''
         self.team = ''
@@ -25,11 +26,18 @@ class Bucket(object):
 
     def _whoami(self):
         resp = self.slack.api_call('auth.test')
+        print(resp)
         self.user_id = resp['user_id']
         self.team_id = resp['team_id']
         self.username = resp['user']
         self.team = resp['team']
         print(f"I am {self.username}, identified by {self.user_id}, on the {self.team} team!")
+        team_list = self.slack.api_call('users.list')
+        # Because slack doesn't tell you in auth.test, or users.info that we're a bot we have to do this in a
+        # roundabout way
+        for m in team_list['members']:
+            if m['id'] == self.user_id and m['is_bot']:
+                self.bot_id = m['profile']['bot_id']
 
     def _pre_start(self):
         for hook in self._pre_start_hooks:
@@ -68,6 +76,9 @@ class Bucket(object):
             return
 
         for event in events:
+            print(event)
+            if event.get('bot_id') == self.bot_id:
+                continue
             if event['type'] == 'message':
                 msg = event['text']
                 if msg.startswith(f"<@{self.user_id}>,"):
