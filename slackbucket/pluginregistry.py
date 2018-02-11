@@ -2,7 +2,7 @@ import os
 import importlib
 
 
-from baseplugin import BasePlugin
+from .baseplugin import BasePlugin
 
 
 class PluginNotFoundError(Exception):
@@ -38,7 +38,6 @@ class PluginRegistry(object):
             return
 
         for p in plugins:
-            print(f"Attempting to load {p}")
             module_path, _, cls_name = p.rpartition('.')
             if not module_path:
                 raise Exception(f"Path for plugin {p} must be absolute path to plugin module.")
@@ -63,7 +62,7 @@ class PluginRegistry(object):
             except ImportError as e:
                 raise PluginConfigurationError(f"Plugin package not found for {p}") from e
 
-            self.loaded.append(plugin_package)
+            self.loaded.append(cls())
         self.ready = True
 
 plugins = PluginRegistry()

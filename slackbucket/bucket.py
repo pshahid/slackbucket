@@ -1,6 +1,7 @@
 import time
 
-from pluginregistry import PluginRegistry
+from .pluginregistry import PluginRegistry
+
 
 class Bucket(object):
     """ Single-threaded blocking version of Bucket which listens with the real-time api. """

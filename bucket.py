@@ -1,7 +1,8 @@
 import argparse
+import sys
 
-from config import MetaConfig
-from bucket import Bucket
+from slackbucket.config import MetaConfig
+from slackbucket.bucket import Bucket
 
 
 def main(args):
