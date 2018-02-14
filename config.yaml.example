@@ -1,0 +1,6 @@
+any-name:
+    channels:
+      - my-awesome-channel
+    plugins:
+      - factoids.plugin.Factoids
+    token: /path/to/slack/token

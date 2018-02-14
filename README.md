@@ -1,6 +1,25 @@
 # Slackbucket
 
-Slackbucket is a bot that is the spiritual successor of bukket, our beloved chat bot. My primary goal (aside from making our own bucket) with this project is to create a codebase where anyone who knows a little bit of Python could contribute new functionality with minimal effort. That means we sacrifice other things (like flexibility), but that should be ok until it's not!
+Slackbucket is a bot that is the spiritual successor of bukket, our beloved chat bot. 
+
+## Usage
+
+```
+/path/to/slackbucket $ python bucket.py -c /path/to/config.yaml
+```
+
+##  Goals
+
+- Our own maintainable bucket codebase.
+- A functional bot that's easy to contribute and add functionality to
+- Something that could potentially cross multiple communication mediums (slack, discord, irc)
+- A project that's just for fun
+
+
+## Non-goals
+
+- A can-do-everything bot
+- Something that will do code deployments for you
 
 ## Architectural Concepts
 
