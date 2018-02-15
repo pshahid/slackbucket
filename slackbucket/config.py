@@ -3,6 +3,7 @@ import os
 import yaml
 
 from slackclient import SlackClient
+from .db import config as dbconfig
 
 
 class PluginLoader(object):
@@ -32,6 +33,22 @@ class Configurator(object):
         self.tokenfile = cfg['token']
         self.plugins = cfg['plugins']
         self.channels = cfg['channels']
+        if 'database' in cfg:
+            self.db = {
+                'host': cfg['database']['host'],
+                'port': cfg['database']['port'],
+                'name': cfg['database']['name'],
+                'driver': cfg['database']['driver']
+            }
+        else:
+            self.db = {
+                'host': 'memory',
+                'password': '',
+                'port': '',
+                'vendor': 'sqlite'
+            }
+
+        dbconfig.create(self.db)
 
     @property
     def token(self):
