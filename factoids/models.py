@@ -1,6 +1,7 @@
+from slackbucket.db import config
 
-class Factoid:
-    """ Empty object """
 
-    def __init__(self):
-        print("Empty factoid!")
+class Factoid(config.base):
+    __tablename__ = 'bucket_facts'
+    
+
