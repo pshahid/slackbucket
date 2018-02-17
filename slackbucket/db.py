@@ -18,7 +18,16 @@ class DBConfig:
 
         if c.get('password'):
             connstr += f"{c['password']}@"
-        connstr += f"{host}:{port}"
+
+        if 'host' not in c and 'port' not in c:
+            connstr += ':memory:'
+        else:
+            if c.get('host'):
+                connstr += c['host']
+
+            if c.get('port'):
+                connstr += f":{c['port']}"
+
 
         self.engine = create_engine(connstr)
         self.base = declarative_base()

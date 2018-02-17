@@ -42,7 +42,7 @@ class Configurator(object):
             }
         else:
             self.db = {
-                'host': 'memory',
+                'host': '',
                 'password': '',
                 'port': '',
                 'vendor': 'sqlite'
