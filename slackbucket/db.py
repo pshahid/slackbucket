@@ -1,18 +1,22 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 class DBConfig:
     engine = None
     base = None
+    session = None
 
     def create(self, c):
-        driver = c['vendor']
+        vendor = c['vendor']
 
-        if driver == 'postgres':
-            connstr = 'postgres://'
-        elif driver == 'sqlite':
+        if vendor == 'postgres':
+           connstr = 'postgres://'
+        elif vendor == 'sqlite':
             connstr = 'sqlite://'
+        elif vendor == 'mysql':
+            connstr = 'mysql://'
         else:
             raise ValueError(f"Database driver {driver} not supported.")
 
@@ -28,9 +32,10 @@ class DBConfig:
             if c.get('port'):
                 connstr += f":{c['port']}"
 
-
         self.engine = create_engine(connstr)
         self.base = declarative_base()
+
+        self.session = sessionmaker(bind=self.engine)
 
 config = DBConfig()
 
