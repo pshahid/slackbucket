@@ -1,0 +1,8 @@
+description: "Bucket, for Slack"
+keywords:
+- bucket
+- chatbot
+maintainers:
+- name: pshahid
+name: slackbucket
+version: 0.0.1
