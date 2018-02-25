@@ -1,0 +1,4 @@
+bucket:
+  name: bucket
+  imageRepository: pshahid/slackbucket
+  imageTag: faa604e
