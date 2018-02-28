@@ -36,6 +36,7 @@ class DBConfig:
         self.base = declarative_base()
 
         self.session = sessionmaker(bind=self.engine)
+        self.base.metadata.create_all()
 
 config = DBConfig()
 

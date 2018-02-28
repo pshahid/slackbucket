@@ -1,6 +1,10 @@
-any-name:
+cs-cofc:
     channels:
-      - my-awesome-channel
+      - cscofc
     plugins:
       - factoids.plugin.Factoids
-    token: /path/to/slack/token
+    database:
+      name: bucket
+      port: 5432
+      host: bucket-postgresql.bucket.svc.cluster.local
+      vendor: postgresql

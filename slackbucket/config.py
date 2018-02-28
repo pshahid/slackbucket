@@ -33,12 +33,21 @@ class Configurator(object):
         self.tokenfile = cfg['token']
         self.plugins = cfg['plugins']
         self.channels = cfg['channels']
+
+        if 'password' in cfg['database'] or 'username' in cfg['database']:
+            raise RuntimeWarning("Please put secrets in environment variables instead of files.")
+
+        db_password = os.getenv('DB_PASSWORD')
+        db_username = os.getenv('DB_USERNAME')
+
         if 'database' in cfg:
             self.db = {
                 'host': cfg['database']['host'],
                 'port': cfg['database']['port'],
                 'name': cfg['database']['name'],
-                'driver': cfg['database']['driver']
+                'vendor': cfg['database']['vendor'],
+                'username': db_username,
+                'password': db_password
             }
         else:
             self.db = {

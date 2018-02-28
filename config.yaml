@@ -3,4 +3,8 @@ cs-cofc:
       - cscofc
     plugins:
       - factoids.plugin.Factoids
-    token: /Users/paul/repos/slackbucket/token
+    database:
+      name: bucket
+      port: 5432
+      host: bucket-postgresql.bucket.svc.cluster.local
+      vendor: postgresql
