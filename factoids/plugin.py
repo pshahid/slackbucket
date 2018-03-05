@@ -34,7 +34,10 @@ class CRUDFactoidEvent(object):
 class CreateOrUpdateFactoid(CRUDFactoidEvent):
 
     def process(self, fact, action, tidbit):
-        self.session.query(Factoid).filter_by(fact=fact)
+        result = self.session.query(Factoid).filter_by(fact=fact)
+
+        if not result:
+            return "I don't know"
 
 
 class Factoids(BasePlugin):
@@ -45,7 +48,6 @@ class Factoids(BasePlugin):
         self.last_factoid = None
         self.last_factoid_time = None
         print("Factoids initialized.")
-        Factoid()
 
     def recv_cmd(self, msg):
         """ Accepts a command from a user, generally to learn a new factoid
