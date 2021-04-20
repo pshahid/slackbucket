@@ -3,7 +3,7 @@ certifi==2018.1.18
 chardet==3.0.4
 idna==2.6
 pluggy==0.6.0
-py==1.5.2
+py==1.10.0
 pytest==3.3.2
 pytz==2017.2
 PyYAML==3.12
